@@ -84,7 +84,7 @@ O termo quadrático **premia espalhar o bombeamento**. No modelo linear do artig
 - O peso é pequeno perto das tarifas (100 a 1600). Para o reservatório 4 ($c = 800$), o termo é quase irrelevante.
 - Não é aplicado a $z$. Isso é coerente com o artigo, que não cobra acionamento de transferências por considerá-las "esporádicas".
 
-> **Faz sentido penalizar ao desligar?** Sim, desde que o termo seja entendido como penalidade de **variação de rotação** (desgaste e golpe de aríete em paradas bruscas), e não como substituto fiel do custo de acionamento. Nos testes, penalizar só a subida muda o custo em cerca de 0,3%. Detalhes e recomendação em [revisao.md](revisao.md), item 17.
+> **Faz sentido penalizar ao desligar?** Sim, desde que o termo seja entendido como penalidade de **variação de rotação** (desgaste e golpe de aríete em paradas bruscas), e não como substituto fiel do custo de acionamento. Nos testes, penalizar só a subida muda o custo em cerca de 0,3%. Detalhes e recomendação em [revisao.md](../docs/revisao.md), item 17.
 
 ---
 
@@ -262,7 +262,7 @@ Portanto, qualquer método que encontre um ponto KKT ([o que é isso?](kkt.md)) 
 |---|---|
 | Problema contínuo, suave e convexo | $f$ deixa de ser "reais gastos": $\beta x^2$ e $\rho\,\Delta x^2$ são termos de modelagem |
 | Ótimo global garantido e verificável | $\beta$ e $\rho$ são escolhidos sem calibração |
-| Métodos de NLP aplicáveis | Comparar com o Método Usual em $f$ favorece o otimizado (ver [revisao.md](revisao.md), item 1) |
+| Métodos de NLP aplicáveis | Comparar com o Método Usual em $f$ favorece o otimizado (ver [revisao.md](../docs/revisao.md), item 1) |
 | Resolve em segundos | Perde-se a contagem discreta de partidas (custo de acionamento) do original |
 
 **Recomendação:** reportar a economia usando só a parte linear ($\sum c\,x + \sum \gamma\,z$), que é o custo de energia comparável ao do artigo, e apresentar $\beta$ e $\rho$ como parâmetros de regularização, idealmente com uma análise de sensibilidade.

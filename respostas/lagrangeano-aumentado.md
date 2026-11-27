@@ -93,7 +93,7 @@ Parâmetros do código:
 
 - **Warm start (`u_aug`):** cada subproblema parte da solução do anterior. Como $\lambda$ e $\rho$ mudam pouco de uma iteração para a outra, a solução também muda pouco, e isso economiza muitas iterações.
 - **`ftol=1e-11`, `gtol=1e-8`:** tolerâncias apertadas. A atualização de $\lambda$ supõe que o subproblema foi bem resolvido.
-- **`res_sub.success` não é verificado.** Se um subproblema parasse por `maxiter`, o laço seguiria sem aviso ([revisao.md](revisao.md), item 4).
+- **`res_sub.success` não é verificado.** Se um subproblema parasse por `maxiter`, o laço seguiria sem aviso ([revisao.md](../docs/revisao.md), item 4).
 
 ### 2.4 Medir, atualizar $\lambda$, aumentar $\rho$ ([main.py:234-249](../src/main.py#L234-L249))
 
@@ -113,7 +113,7 @@ pen_rho = min(pen_rho * 3.0, 1e6)
 
   Interpretação: se a restrição $i$ continua violada ($g_i > 0$), $\lambda_i$ cresce e a "empurra" com mais força no próximo subproblema.
 - **Linhas [247-248](../src/main.py#L247-L248):** a parada exige violação menor que $10^{-4}$ m³. O critério olha **só a viabilidade**, não a otimalidade (o gradiente do Lagrangeano).
-- **Linha [249](../src/main.py#L249):** $\rho$ é multiplicado por 3 **em toda iteração**, até no máximo $10^6$. A regra clássica aumenta $\rho$ só quando a violação não cai o suficiente ([revisao.md](revisao.md), item 4).
+- **Linha [249](../src/main.py#L249):** $\rho$ é multiplicado por 3 **em toda iteração**, até no máximo $10^6$. A regra clássica aumenta $\rho$ só quando a violação não cai o suficiente ([revisao.md](../docs/revisao.md), item 4).
 
 ---
 
@@ -140,7 +140,7 @@ Como ler a tabela:
 - **Até $k = 5$, a violação cai cerca de 10 a 30 vezes por iteração.** Esse é o efeito combinado dos multiplicadores e do $\rho$ crescente.
 - **De $k = 6$ em diante, a queda fica lenta**, mesmo com $\rho$ triplicando. A explicação provável é que o limite passa a ser a **precisão dos subproblemas**: com $\rho$ grande, o L-BFGS-B fica mal condicionado e para (por `ftol`/`gtol`) antes de zerar a violação. Ou seja, aumentar $\rho$ já não estava ajudando.
 - **Resultado final:** 134 multiplicadores de mínimo e 2 de máximo positivos, os mesmos 134 + 2 ativos encontrados pelo SLSQP. A maior diferença entre as duas soluções, componente a componente, é de $6\cdot10^{-4}$ (na escala $[0,1]$).
-- **Tempo:** ~0,5–0,7 s, contra ~1,8–2,3 s do SLSQP. A comparação é frágil, porque as precisões são diferentes ($10^{-5}$ contra $10^{-11}$ m³) e houve uma execução só ([revisao.md](revisao.md), item 8).
+- **Tempo:** ~0,5–0,7 s, contra ~1,8–2,3 s do SLSQP. A comparação é frágil, porque as precisões são diferentes ($10^{-5}$ contra $10^{-9}$ m³) e houve uma execução só ([revisao.md](../docs/revisao.md), item 8).
 
 ---
 
@@ -163,7 +163,7 @@ O código aumenta $\rho$ mesmo sem necessidade teórica. Isso acelera as primeir
 | Transparente: dá para acompanhar $\lambda$, $\rho$ e a violação a cada passo | O critério de parada ignora a otimalidade, e o sucesso dos subproblemas não é verificado |
 | Os $\lambda$ finais são estimativas dos preços sombra ([kkt.md](kkt.md)) | Com $\rho$ muito grande, o subproblema fica mal condicionado |
 
-**Possíveis melhorias** (detalhadas em [revisao.md](revisao.md), item 4):
+**Possíveis melhorias** (detalhadas em [revisao.md](../docs/revisao.md), item 4):
 
 1. aumentar $\rho$ só quando a violação não cair pelo menos à metade;
 2. parar também pela norma do gradiente projetado de $L_\rho$;

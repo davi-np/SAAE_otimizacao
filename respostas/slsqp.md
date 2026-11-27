@@ -99,7 +99,7 @@ Execução de verificação (SciPy 1.18):
 | Status | `Optimization terminated successfully` |
 | Iterações | 21 (21 avaliações de $f$ e de $\nabla f$) |
 | Custo final | 27.529,21 |
-| Violação máxima de volume | ~$10^{-11}$ m³ |
+| Violação máxima de volume | ~$10^{-9}$ m³ (o relatório, em outra máquina, reporta $2{,}7\cdot10^{-11}$) |
 | Tempo | ~1,8–2,3 s (varia entre execuções) |
 
 **Estrutura da solução:**
@@ -130,7 +130,7 @@ Neste problema, as condições de 2ª ordem valem automaticamente, porque $f$ é
 | Vantagens | Limitações |
 |---|---|
 | Lida diretamente com as restrições: não precisa de penalidade nem de ajuste de parâmetros | O QP é resolvido com **álgebra densa**: com 384 variáveis e 384 restrições, cada iteração custa $O(n^3)$. Por isso o método é mais lento que o Lagrangeano Aumentado nesta instância |
-| Muito preciso na viabilidade (~$10^{-11}$ m³) | Não escala bem para horizontes ou redes muito maiores |
+| Muito preciso na viabilidade (~$10^{-9}$ m³) | Não escala bem para horizontes ou redes muito maiores |
 | Poucas iterações | É uma caixa-preta (código Fortran): pouco controle sobre o que acontece dentro |
 
 **Detalhe de eficiência:** `objetivo_e_gradiente` é chamada duas vezes por ponto, uma pela lambda do objetivo e outra pela lambda do `jac`. Passar `jac=True` com uma função que devolve `(f, grad)` eliminaria a repetição. Neste tamanho de problema, o efeito é pequeno.

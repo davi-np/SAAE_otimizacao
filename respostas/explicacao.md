@@ -109,4 +109,4 @@ Lagr. Aument. | Custo = 27.529,21 | 10–11 iterações externas
 Economia: 33,04%
 ```
 
-Os dois otimizadores concordam, como a convexidade prevê. **Mas** o número de 33% precisa de cuidado na interpretação — ver [revisao.md](revisao.md).
+Os dois otimizadores concordam, como a convexidade prevê. **Mas** o número de 33% precisa de cuidado na interpretação — ver [revisao.md](../docs/revisao.md).

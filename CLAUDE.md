@@ -20,4 +20,4 @@ Quando uma resposta for longa (explicações com várias seções, tabelas, fór
 
 Respostas curtas continuam direto no chat.
 
-`docs/` guarda apenas o material da disciplina (enunciado, artigo de referência e relatório).
+`docs/` guarda o material da disciplina (enunciado, artigo de referência e relatório) e a revisão do relatório (`docs/revisao.md`).

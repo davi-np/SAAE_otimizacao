@@ -2,6 +2,8 @@
 
 **Como foi verificado:** rodei `src/main.py` (numpy/scipy recentes) e scripts auxiliares de análise. Os custos do relatório **se reproduzem** (27.529,21 / 41.111,80 / 33,04%). Os problemas abaixo são de **interpretação, metodologia e redação** — o núcleo matemático está correto (ver final).
 
+**Reverificado em 27/11/2026** (SciPy 1.18.1), com código e relatório inalterados desde 21/11. Todos os números desta revisão foram recalculados e se mantêm, com exceção de pequenos ajustes nos itens 8 e 9 e na seção "Prioridade baixa". O item 11 foi ampliado e os itens 4 e 14 foram complementados.
+
 ---
 
 ## Prioridade alta — afetam as conclusões
@@ -66,6 +68,8 @@ if viol_m3 > 0.5 * viol_anterior:
 
 Também: o critério de parada só olha viabilidade (não otimalidade), e `res_sub.success` nunca é verificado.
 
+**Evidência de que o aumento contínuo de $\rho$ não ajuda no final:** a partir da 6ª iteração externa, a violação cai devagar (de 9,3e-4 para 6,9e-5 m³ em 4 iterações), mesmo com $\rho$ triplicando a cada passo. O limite provável passa a ser a precisão dos subproblemas, e não os multiplicadores. Tabela completa em [lagrangeano-aumentado.md](../respostas/lagrangeano-aumentado.md), seção 3.
+
 ---
 
 ## Prioridade média — relatório
@@ -75,13 +79,13 @@ Também: o critério de parada só olha viabilidade (não otimalidade), e `res_s
 | 5 | Nome do script errado: `saae_sao_carlos_nl.py` | Relatório §4 e README | `src/main.py`. O README também cita a pasta `relatorio/` (não existe) e tem placeholders nos integrantes |
 | 6 | "Comportamento idêntico ao Experimento 8" | §4 | Não há comparação direta. Comparar com a Tabela 8 do artigo (19,05%) ou retirar |
 | 7 | Demanda "seguindo a Seção 4.1 do artigo" | §2 | Os fatores 25/55/60/50% e o 0,65·$v_j$ foram **inventados pelo grupo**. Dizer isso explicitamente |
-| 8 | "LA é 3,2× mais rápido" | §4 | Comparação frágil: precisões diferentes (SLSQP ~$10^{-10}$ m³, LA ~$10^{-5}$ m³), execução única, BLAS multithread. Suavizar a afirmação |
-| 9 | Números não batem exatamente ao rodar | Tabela 3 | Obtive 10 iterações externas (não 11) e violações 9,7e-10 / 6,9e-5. Custos idênticos. Informar versões/máquina ou arredondar |
+| 8 | "LA é 3,2× mais rápido" | §4 | Comparação frágil: precisões diferentes (SLSQP ~$10^{-9}$ m³, LA ~$10^{-5}$ m³), execução única, BLAS multithread. Em duas reexecuções, a razão foi de 2,9× (1,83 s / 0,64 s). Suavizar a afirmação |
+| 9 | Números não batem exatamente ao rodar | Tabela 3 e README | Obtive 10 iterações externas (não 11) e violações 9,7e-10 / 6,9e-5 (o relatório diz 2,73e-11 / 4,13e-5). Custos idênticos. O README repete os números do relatório. Informar versões/máquina ou arredondar |
 | 10 | Índices inconsistentes | Eq. (1) vs (2)–(3) | Eq. (1) usa $t$ a partir de 0 ($(1-\theta)^{t+1}$, $s = 0..t$); o resto usa $t = 1..T$. Padronizar |
-| 11 | $\delta^+(j)$ e $\delta^-(j)$ não definidos | Eq. (1) | Definir (arestas que saem / entram em $j$) |
+| 11 | Notação incompleta e ambígua | Eq. (1), (2) e (5) | $\delta^+(j)$ e $\delta^-(j)$ não estão definidos: definir como as arestas que saem de $j$ e as que entram em $j$. Além disso, **$\rho$ tem dois significados**: peso da suavização em (2), com $\rho = 15$, e penalidade $\rho_k$ do Lagrangeano Aumentado em (5). O código já distingue os dois (`rho` e `pen_rho`). Renomear um deles no texto, por exemplo $\mu_k$ para a penalidade |
 | 12 | "Penalidades elevadas de acionamento" do Usual | §4 | Essas penalidades são os termos artificiais $\beta$/$\rho$ do **nosso** modelo (ver item 1) |
 | 13 | $\beta x^2$ como "perda de carga" | §2 | Simplificação aceitável, mas pelas leis de afinidade a potência cresce ~cubicamente com a rotação. Apresentar como escolha de modelagem convexa |
-| 14 | Métodos não vistos em aula pouco explicados | §3 | O enunciado exige explicar aplicabilidade, funcionamento e teorema de convergência. L-BFGS-B (usado nos subproblemas) nem é explicado |
+| 14 | Métodos não vistos em aula pouco explicados, escolha não justificada | §3 | Se algum método não foi visto em aula, o enunciado exige explicar a que problemas ele se aplica, como funciona e o que o teorema de convergência garante. O L-BFGS-B (usado nos subproblemas) nem é explicado. O enunciado também pede que o relatório diga **por que** os métodos foram escolhidos e que ao menos um tenha sido visto em aula. O relatório não diz qual foi. Material de apoio: [slsqp.md](../respostas/slsqp.md) e [lagrangeano-aumentado.md](../respostas/lagrangeano-aumentado.md) |
 | 15 | Referências incompletas | Referências | Nocedal & Wright é citado no texto mas não listado. Faltam Kraft (1988, SLSQP) e Byrd et al. (1995, L-BFGS-B). Só o Gemini aparece como IA — se o Claude foi usado no relatório, o enunciado exige citar |
 | 16 | Falta um gráfico | §4 | Volume × tempo (Usual vs. Otimizado), como as Fig. 11–13 do artigo. Deixaria visíveis o enchimento antes da ponta e o efeito de fim de horizonte |
 
@@ -116,7 +120,7 @@ A adaptação 1 do relatório (§2, "Variáveis contínuas de vazão") dá a ent
 
 ## Prioridade baixa — código
 
-- **`check_grad` assusta à toa:** imprime erro absoluto 1,5e-3. O erro **relativo** é 3e-7 (gradiente correto). Imprimir o relativo.
+- **`check_grad` assusta à toa:** imprime erro absoluto 1,5e-3. O erro **relativo** à norma do gradiente em $u_0$ é ~2e-7 (gradiente correto). Imprimir o relativo.
 - **Avaliação dupla:** `fun` e `jac` são lambdas separadas que chamam `objetivo_e_gradiente` duas vezes ([179–181](../src/main.py#L179-L181), [225–227](../src/main.py#L225-L227)). Usar `jac=True` e passar a função que devolve `(f, grad)`. Afeta a comparação de tempo.
 - **Script monolítico:** tudo em variáveis globais. Encapsular a instância numa função `(seed, theta, beta, rho)` facilita o item 3.
 
@@ -129,3 +133,5 @@ A adaptação 1 do relatório (§2, "Variáveis contínuas de vazão") dá a ent
 - Matriz de balanço reproduz a Eq. (1) do artigo, com perda aplicada a $I_{j,t-1}$.
 - Gradiente do objetivo, jacobianas das restrições e gradiente do Lagrangeano Aumentado estão corretos.
 - A afirmação de convexidade estrita é verdadeira, e SLSQP e LA concordam até 6 casas — boa evidência de que ambos acharam o ótimo global.
+- A Tabela 4 do relatório (uso médio das bombas fora e dentro da ponta) se reproduz exatamente.
+- A Tabela 8 do artigo de fato traz 19,05% de economia para a 4ª classe (citada no item 1).
