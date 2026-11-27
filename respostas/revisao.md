@@ -10,7 +10,7 @@
 
 Dois efeitos somados:
 
-**a) Termos artificiais contam como "custo".** $f$ inclui $\beta x^2$ e $\rho\,\Delta x^2$, que são escolhas de modelagem, não energia paga. E eles punem justamente o Método Usual, que opera em 0/100%:
+**a) Termos artificiais contam como "custo".** $f$ inclui $\beta x^2$ e $\rho\,\Delta x^2$, que são escolhas de modelagem, não energia paga. E eles punem justamente o Método Usual, que opera aos saltos (81% das horas com a bomba em exatamente 0% ou 100%):
 
 | | Custo linear ($\sum c x + \gamma z$) | $\beta x^2$ | $\rho\,\Delta x^2$ | Total |
 |---|---:|---:|---:|---:|
@@ -102,6 +102,15 @@ A diferença é de cerca de 0,3%. A tarifa dobrada da ponta domina a penalidade 
 **Recomendação:** **manter o termo simétrico** e mudar a redação. Em vez de "substitui o custo de acionamento", apresentá-lo como **penalidade de variação de rotação** (desgaste do conjunto motor-bomba e golpe de aríete, que ocorre justamente em paradas bruscas), um regularizador que suaviza as rampas. Dizer explicitamente que nenhuma versão contínua reproduz o custo de acionamento discreto do artigo.
 
 Por que não usar a versão só na subida: ela tem derivada primeira contínua, mas a segunda não. Isso contradiz a afirmação de que o objetivo é de classe $C^\infty$ e enfraquece as hipóteses do teorema de convergência do SLSQP, sem ganho prático.
+
+### 18. "Variáveis contínuas" não é o que elimina as binárias
+
+A adaptação 1 do relatório (§2, "Variáveis contínuas de vazão") dá a entender que o controle das bombas passou a ser contínuo por causa da adaptação. No artigo, porém, $x_{jt}$ e $z_{jlt}$ **já são contínuos** em $[0,1]$ (fração da hora ligada). As binárias $y$ e $\alpha$ são auxiliares e só servem para cobrar o custo de acionamento.
+
+**Correção de redação:** deixar claro que:
+
+- as binárias somem porque o **custo de acionamento** foi substituído pelo termo $\rho\,\Delta x^2$ (adaptação 2);
+- a reinterpretação de $x$ como fração de vazão (inversor de frequência) serve para justificar fisicamente o termo $\beta x^2$, e não para tornar $x$ contínuo.
 
 ---
 

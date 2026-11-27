@@ -47,8 +47,8 @@ Para caber no escopo da disciplina, o modelo foi transformado num problema **con
 
 | Original | Adaptação | Motivo |
 |---|---|---|
-| $x$ = fração do **tempo** ligada | $x$ = fração da **vazão** (bomba com inversor de frequência) | elimina o "liga/desliga" |
-| custo de acionamento $sc \cdot \alpha$ (binária) | $\rho\,(x_{jt} - x_{j,t-1})^2$, com $\rho = 15$ | desestimula variações bruscas sem binárias |
+| $x$ = fração do **tempo** ligada | $x$ = fração da **vazão** (bomba com inversor de frequência) | reinterpretação física; $x$ já era contínuo, isso só justifica o custo não-linear abaixo |
+| custo de acionamento $sc \cdot \alpha$ (com as binárias $y$, $\alpha$) | $\rho\,(x_{jt} - x_{j,t-1})^2$, com $\rho = 15$ | **é aqui que as binárias somem**; desestimula variações bruscas |
 | custo linear $c \cdot x$ | $c\,(x + \beta x^2)$, com $\beta = 0{,}35$ | operar em vazão alta custa proporcionalmente mais (perda de carga) |
 | $I_{jt}$ como variável | $I_{jt}$ **eliminado** (escrito em função de $x, z$) | sobram só restrições de desigualdade e caixa |
 
@@ -62,7 +62,7 @@ Isso é **afim** nas decisões: $I = b + M u$, onde $u = (x, z)$ tem 384 compone
 
 $$\min_{u \in [0,1]^{384}} f(u) \quad \text{s.a.} \quad h^{\min} \le b + M u \le h^{\max}$$
 
-$f$ é **estritamente convexa** (Hessiana diagonal positiva + termo de suavização semidefinido) e as restrições são **lineares**. Consequência: existe um único mínimo global, e qualquer ponto KKT é ele. Por isso os dois métodos devem chegar ao mesmo valor — o que serve de verificação cruzada.
+$f$ é **estritamente convexa** (Hessiana diagonal positiva + termo de suavização semidefinido) e as restrições são **lineares**. Consequência: existe um único mínimo global, e qualquer ponto KKT ([o que é isso?](kkt.md)) é ele. Por isso os dois métodos devem chegar ao mesmo valor — o que serve de verificação cruzada.
 
 ---
 
