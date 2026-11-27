@@ -1,5 +1,13 @@
 # CLAUDE.md
 
+## Antes de responder, consulte `respostas/`
+
+Para poupar tokens: a cada pergunta, verifique primeiro se algum arquivo em `respostas/` já a responde. Basta olhar os títulos (`grep -m1 '^# ' respostas/*.md`) e, se preciso, buscar termos da pergunta com `grep`.
+
+- Se houver resposta: apenas indique o arquivo (e a seção, se for o caso) com o link, em 1 a 2 linhas. Não repita o conteúdo e não refaça a análise.
+- Se a resposta existente estiver incompleta ou desatualizada em relação ao código, diga isso e atualize esse arquivo.
+- Se não houver: responda normalmente, seguindo a regra abaixo.
+
 ## Respostas longas vão para `respostas/`
 
 Quando uma resposta for longa (explicações com várias seções, tabelas, fórmulas ou revisões), escreva-a num arquivo Markdown em `respostas/` em vez de colocá-la inteira no chat.
