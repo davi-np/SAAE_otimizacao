@@ -4,6 +4,20 @@
 
 **Reverificado em 27/11/2026** (SciPy 1.18.1), com código e relatório inalterados desde 21/11. Todos os números desta revisão foram recalculados e se mantêm, com exceção de pequenos ajustes nos itens 8 e 9 e na seção "Prioridade baixa". O item 11 foi ampliado e os itens 4 e 14 foram complementados.
 
+## Índice
+
+- [Prioridade alta — afetam as conclusões](#prioridade-alta--afetam-as-conclusões)
+  1. [A economia de 33% está inflada](#1-a-economia-de-33-está-inflada)
+  2. [As transferências nunca são usadas](#2-as-transferências-nunca-são-usadas)
+  3. [Só uma instância foi resolvida](#3-só-uma-instância-foi-resolvida)
+  4. [Lagrangeano Aumentado: texto contradiz a implementação](#4-lagrangeano-aumentado-texto-contradiz-a-implementação)
+- [Prioridade média — relatório](#prioridade-média--relatório)
+  - Itens 5–16 (tabela): nome do script, Experimento 8, origem da demanda, comparação de tempo, números que não batem, índices, notação, "penalidades de acionamento", $\beta x^2$ como perda de carga, explicação e escolha dos métodos, referências, gráfico
+  - [17. Justificativa do termo de suavização](#17-justificativa-do-termo-de-suavização)
+  - [18. "Variáveis contínuas" não é o que elimina as binárias](#18-variáveis-contínuas-não-é-o-que-elimina-as-binárias)
+- [Prioridade baixa — código](#prioridade-baixa--código)
+- [O que está correto (verificado)](#o-que-está-correto-verificado)
+
 ---
 
 ## Prioridade alta — afetam as conclusões
@@ -21,15 +35,22 @@ Dois efeitos somados:
 
 **b) Efeito de fim de horizonte.** Sem restrição sobre o volume final, o otimizador termina **todos** os reservatórios exatamente em $h^{\min}$ (60 / 225 / 32 / 780). O Usual termina com bem mais água (189 / 321 / 60 / 1943). O otimizado capta 20.662 m³ contra 27.745 m³ — parte da "economia" é só não reabastecer no fim.
 
-**Comparação justa** (mesmo critério de volume final):
+**Comparação justa.** Para separar os dois efeitos, refiz a comparação de duas formas.
 
-| Cenário | Economia em $f$ | Economia em energia linear |
-|---|---:|---:|
-| Como está | 33,0% | 23,1% |
-| Com $I_{j,T} \ge I_{j,0}$ | 30,2% | 20,4% |
-| Com $I_{j,T} \ge$ volume final do Usual | 26,8% | **17,3%** |
+**As colunas: o que conta como custo.**
 
-O último número é coerente com o artigo (Tabela 8: **19,05%** para a 4ª classe).
+- *Economia em $f$*: compara o objetivo completo, com $\beta x^2$ e $\rho\,\Delta x^2$. É o número do relatório.
+- *Economia em energia linear*: compara só $\sum c\,x + \sum \gamma\,z$, que é a conta de energia propriamente dita e a métrica usada pelo artigo. Esta coluna remove o efeito (a).
+
+**As linhas: com quanta água cada um termina a hora 48.** O otimizador não "sabe" que existe uma hora 49. Para ele, a água que sobra no fim é desperdício, então ele esvazia tudo até $h^{\min}$. Isso deixa o dia seguinte começando com os reservatórios no mínimo, e alguém vai pagar para enchê-los depois. Para tirar essa vantagem, resolvi o problema de novo com o SLSQP, acrescentando 4 restrições sobre o volume final $I_{j,48}$. O Método Usual não muda.
+
+| Cenário | Restrição extra no volume final | Economia em $f$ | Economia em energia linear |
+|---|---|---:|---:|
+| Como está | nenhuma: o otimizador termina em $h^{\min}$ (60 / 225 / 32 / 780) | 33,0% | 23,1% |
+| Devolver como recebeu | $I_{j,48} \ge I_{j,0}$ (100 / 375 / 53 / 1300) | 30,2% | 20,4% |
+| Mesmo final do Usual | $I_{j,48} \ge$ final do Usual (189 / 321 / 60 / 1943) | 26,8% | **17,3%** |
+
+Na última linha, os dois métodos entregam o sistema no mesmo estado. Toda a diferença de custo vem, então, de *como* as bombas foram operadas nas 48 horas, e não de quanta água ficou para o dia seguinte. É a comparação mais justa, e os 17,3% são coerentes com a economia que o artigo obtém com o modelo dele contra o Usual dele (Tabela 8: **19,05%** para a 4ª classe).
 
 **Sugestão:** adicionar a restrição $I_{j,T} \ge I_{j,0}$ ao modelo (é comum em planejamento com horizonte finito) e reportar o custo **linear** de energia como métrica principal de economia.
 
@@ -89,9 +110,9 @@ Também: o critério de parada só olha viabilidade (não otimalidade), e `res_s
 | 15 | Referências incompletas | Referências | Nocedal & Wright é citado no texto mas não listado. Faltam Kraft (1988, SLSQP) e Byrd et al. (1995, L-BFGS-B). Só o Gemini aparece como IA — se o Claude foi usado no relatório, o enunciado exige citar |
 | 16 | Falta um gráfico | §4 | Volume × tempo (Usual vs. Otimizado), como as Fig. 11–13 do artigo. Deixaria visíveis o enchimento antes da ponta e o efeito de fim de horizonte |
 
-### 17. Justificativa do termo de suavização $\rho\,(x_{jt} - x_{j,t-1})^2$
+### 17. Justificativa do termo de suavização
 
-O relatório (§2) apresenta o termo como substituto do custo de acionamento do artigo. Não é fiel. O artigo cobra só ao **ligar**, e só a partir de "desligada". O termo atual cobra subidas **e** descidas, e qualquer variação, como 0,40 → 0,45.
+O relatório (§2) apresenta o termo $\rho\,(x_{jt} - x_{j,t-1})^2$ como substituto do custo de acionamento do artigo. Não é fiel. O artigo cobra só ao **ligar**, e só a partir de "desligada". O termo atual cobra subidas **e** descidas, e qualquer variação, como 0,40 → 0,45.
 
 Na prática, a simetria quase não importa. Resolvi com SLSQP três variantes:
 
