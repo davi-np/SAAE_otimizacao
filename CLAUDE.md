@@ -20,4 +20,14 @@ Quando uma resposta for longa (explicações com várias seções, tabelas, fór
 
 Respostas curtas continuam direto no chat.
 
+## Arquivos grandes têm índice
+
+Todo arquivo Markdown grande do projeto, seja uma resposta ou não, começa com uma seção `## Índice`. Considere grande um arquivo com mais de ~100 linhas ou com 4 ou mais seções.
+
+- A seção fica logo depois do título e do parágrafo de abertura.
+- O índice lista as seções `##` e, quando ajudar a navegar, as `###`, com links para as âncoras (`[Título](#título-da-seção)`).
+- Nas âncoras, use minúsculas, troque espaços por `-`, remova a pontuação e mantenha os acentos. Exemplo: `## Prioridade média — relatório` vira `#prioridade-média--relatório`.
+- Evite fórmulas LaTeX nos títulos, porque elas geram âncoras quebradiças. Coloque a fórmula no texto logo abaixo do título.
+- Ao criar, remover ou renomear seções, atualize o índice na mesma edição.
+
 `docs/` guarda o material da disciplina (enunciado, artigo de referência e relatório) e a revisão do relatório (`docs/revisao.md`).
